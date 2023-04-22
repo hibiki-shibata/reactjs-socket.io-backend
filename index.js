@@ -15,13 +15,21 @@ const io = new Server(server, {
     },
 });
 
+const [messageList2, setMessagelist2] = useState([]);
+
 io.on("connection", (socket) =>{
-    console.log('user conected : &{socket.id}');
+    console.log('SOCKET CONNECTED');
     
     socket.on("disconnect", () => {
-        console.log("user disconnected", socket.id);
+        console.log("SOCKET DISCONNECTED", socket.id);
     })
-})
+});
+
+
+socket.on("send_message", (data) => {
+    socket.to(data.room).emit("receive_message", data);
+  });
+
 
 server.listen(3001, () => {
     console.log(("Server running yayy!"));
